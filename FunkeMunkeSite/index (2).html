@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Funke Munke — Weird Stories & Fun Experiences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;0,800;0,900;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="main.js" defer></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --logo-bg:     #7868dd;
+  --purple:      #7C6AE8;
+  --purple-dark: #5a4bbf;
+  --purple-light:#a899f0;
+  --bg:          #1a1228;
+  --bg2:         #221833;
+  --surface:     #7C6AE8;
+  --border:      rgba(255,255,255,0.25);
+  --white:       #ffffff;
+  --muted:       rgba(255,255,255,0.55);
+  --dim:         rgba(255,255,255,0.15);
+  --yellow:      #ffe566;
+  --font-fun:    'Nunito', sans-serif;
+  --font-mono:   'Space Mono', monospace;
+  --r: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+.hero,
+.feature-banner,
+.section,
+.cta-strip {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+body {
+  overscroll-behavior-y: contain;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-fun);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+.cursor {
+  position: fixed; width: 18px; height: 18px;
+  background: var(--purple-light); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .15s, height .15s, background .15s;
+  mix-blend-mode: screen;
+}
+.cursor.big { width: 42px; height: 42px; background: var(--yellow); }
+a:hover ~ .cursor {
+  transform: scale(2);
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0.85rem 2.5rem;
+  background: var(--logo-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transform: translateY(-100%);
+  transition: transform 0.35s ease;
+}
+nav.visible { transform: translateY(0); }
+.nav-logo img {
+  height: 44px; width: 44px; border-radius: 8px; display: block;
+}
+.nav-inner {
+  display: flex;
+  align-items: center; /* This centers the logo/links horizontally */
+  gap: 3rem;
+  height: 100%;       /* Ensure the container has height to center within */
+}
+
+.nav-links {
+  display: flex;
+  align-items: center; /* Forces the list items to align vertically */
+  gap: 2rem;
+  list-style: none;
+  margin: 0;           /* CRITICAL: Removes default browser padding/margin */
+  padding: 0;          /* that often pushes lists off-center */
+}
+.nav-links a {
+  font-family: var(--font-fun); font-weight: 800; font-size: 0.85rem;
+  letter-spacing: 0.05em; color: rgba(255,255,255,0.65); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+/* ─── HERO ─── */
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0 3px, transparent 3px),
+    radial-gradient(circle at 80% 60%, rgba(255,255,255,0.05) 0 5px, transparent 4px);
+  background-size: 120px 120px, 180px 180px;
+  animation: drift 18s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes drift {
+  from { transform: translate(0,0) rotate(0deg); }
+  to   { transform: translate(-40px,-60px) rotate(3deg); }
+}
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  position: relative; overflow: hidden;
+  background: #7864e8;
+}
+.hero-logo-wrap {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+}
+.hero-logo-img {
+  width: clamp(260px, 45vw, 520px);
+  animation: heroFadeIn 1s ease both;
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: scale(0.94) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgb(255, 255, 255);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  animation: bounce 2s ease-in-out infinite; z-index: 1;
+}
+.scroll-hint::after { content: '↓'; font-size: 1rem; color: rgb(255, 255, 255); }
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ─── FEATURE BANNERS ─── */
+.feature-banner {
+  width: 100%; height: 100vh;
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+.feature-banner img.banner-bg {
+  transform: scale(1.05);
+  will-change: transform;
+}
+.feature-banner img.banner-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.feature-banner:hover img.banner-bg { transform: scale(1.03); }
+.feature-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,6,20,0.92) 0%, rgba(10,6,20,0.4) 35%, transparent 65%);
+  transition: background 0.35s ease;
+}
+.feature-banner:hover .feature-overlay { background: rgba(10,6,20,0.82); }
+.feature-hover-info {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 3rem;
+  opacity: 0; transition: opacity 0.35s ease;
+  gap: 1.25rem; z-index: 2; pointer-events: none;
+}
+.feature-banner:hover .feature-hover-info { opacity: 1; pointer-events: auto; }
+.hover-genre {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--card-color, var(--purple-light));
+}
+.hover-title {
+  font-size: clamp(2rem, 5vw, 4rem); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1;
+}
+.hover-desc {
+  font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; font-weight: 700;
+}
+.hover-cta {
+  font-family: var(--font-fun); font-weight: 900; font-size: 0.9rem;
+  padding: 0.85rem 2.2rem; border-radius: 50px; text-decoration: none;
+  background: var(--card-color, var(--purple));
+  transition: transform .2s; display: inline-block; margin-top: 0.5rem;
+}
+.hover-cta:hover { transform: scale(1.05); }
+.banner-bottom {
+  position: relative; z-index: 3; width: 100%;
+  padding: 2rem 3rem 3rem;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  transition: opacity 0.3s ease;
+}
+.feature-banner:hover .banner-bottom { opacity: 0; pointer-events: none; }
+.banner-title-area { display: flex; flex-direction: column; gap: 0.5rem; }
+.banner-label {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+.banner-title {
+  font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900;
+  letter-spacing: -0.04em; line-height: 1;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+.banner-hint {
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--dim);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+/* ─── SECTIONS ─── */
+.section { padding: 6rem 2.5rem; }
+.section-alt { background: var(--bg2); }
+
+/* ─── GAMES SECTION ZIGZAG ─── */
+#games {
+  background-color: #5a47c2;
+}
+
+#games .section-label {
+  font-family: var(--font-fun);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-transform: none;
+  text-shadow: 2px 2px 0px #5a4bbf, 4px 4px 0px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.5);
+  margin-bottom: 0;
+}
+.section-label {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase; color: var(--purple-light);
+  margin-bottom: 0.6rem;
+}
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1; margin-bottom: 3rem;
+}
+
+/* ─── GAMES GRID ─── */
+.games-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 2rem; 
+}
+.game-card {
+  background: var(--surface);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  overflow: hidden;
+  text-decoration: none; color: inherit;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+  display: flex; flex-direction: column;
+}
+.game-card {
+  opacity: 0;
+  transform: translateY(40px) rotate(-2deg);
+  transition: 0.7s cubic-bezier(.2,.8,.2,1);
+}
+
+.game-card.show {
+  opacity: 1;
+  transform: translateY(0) rotate(0);
+}
+.game-card:hover {
+  transform: translateY(-6px) rotate(-0.4deg);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.7);
+}
+.game-art { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.game-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+.game-genre-badge {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.6rem;
+  font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.3rem 0.8rem; border-radius: 50px;
+  background: var(--card-badge-bg, rgba(124,106,232,0.2));
+  color: var(--card-color, var(--purple-light)); width: fit-content;
+}
+.game-title { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
+.game-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; flex: 1; }
+.game-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.5rem;
+}
+.game-play {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--white);
+}
+.game-arrow {
+  font-size: 1.1rem; color: var(--card-color, var(--purple-light));
+  transition: transform .2s;
+}
+.game-card:hover .game-arrow { transform: translate(3px,-3px); }
+
+/* ─── ABOUT ─── */
+.about-wrap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+}
+.about-left { display: flex; flex-direction: column; gap: 1.2rem; }
+.about-left p { font-size: 1rem; color: var(--muted); line-height: 1.75; }
+.about-left strong { color: var(--white); font-weight: 900; }
+.about-visual {
+  position: relative; aspect-ratio: 1; 
+  display: flex; align-items: center; justify-content: center;
+}
+.about-logo-img {
+  width: 90%; border-radius: var(--r-xl);
+  box-shadow: 0 0 0 8px rgba(124,106,232,0.15), 0 0 0 16px rgba(124,106,232,0.07);
+  position: relative; z-index: 1;
+}
+.about-deco {
+  position: absolute; border-radius: 50%; animation: float 4s ease-in-out infinite;
+}
+.about-deco-1 { width: 80px; height: 80px; background: var(--yellow); top: -20px; right: 10px; }
+.about-deco-2 { width: 50px; height: 50px; background: var(--purple); bottom: 10px; left: -10px; animation-delay: -2s; }
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-14px) rotate(8deg); }
+}
+
+/* ─── CTA STRIP ─── */
+.cta-strip {
+  padding: 6rem 2.5rem; text-align: center;
+  background: var(--purple); position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+}
+.cta-strip::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,0.04) 20px, rgba(255,255,255,0.04) 21px);
+}
+.cta-strip h2 em { color: var(--yellow); font-style: italic; }
+.btn-white {
+  font-family: var(--font-fun); font-weight: 900; font-size: 0.9rem;
+  padding: 0.85rem 2rem; border-radius: 50px; text-decoration: none;
+  background: var(--white); color: var(--purple-dark);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  transition: transform .2s, box-shadow .2s; display: inline-block; position: relative;
+}
+.btn-white:hover { transform: translateY(-3px) scale(1.05); }
+
+/* ─── COMMUNITY ─── */
+.comm-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; ;
+}
+.comm-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 2rem;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0.75rem;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.comm-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--card-color, var(--purple));
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.comm-icon {
+  width: 40px; height: 40px; object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+.comm-icon-svg {
+  width: 40px; height: 40px;
+  opacity: 0.85;
+}
+.comm-icon-svg svg { width: 100%; height: 100%; fill: white; }
+.comm-title { font-size: 1.1rem; font-weight: 900; }
+.comm-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.55; flex: 1; }
+.comm-cta {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--card-color, var(--purple-light));
+}
+
+
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 2.5rem; border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1.5rem;
+  background: var(--logo-bg);
+}
+.footer-logo { display: flex; align-items: center; gap: 0.75rem; }
+.footer-logo img { height: 64px; border-radius: 10px; }
+.footer-brand { font-weight: 900; font-size: 1rem; color: var(--purple-light); }
+.footer-links { display: flex; gap: 2rem; list-style: none; }
+.footer-links a {
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s;
+}
+.footer-links a:hover { color: var(--white); }
+.footer-copy { font-family: var(--font-mono); font-size: 0.68rem; color: var(--dim); }
+
+
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .games-grid { grid-template-columns: 1fr; }
+  .about-wrap { grid-template-columns: 1fr; }
+  .about-visual { display: none; }
+  .section { padding: 4rem 1.5rem; }
+  .feature-banner { height: 70vh; }
+  .comm-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+
+/* ─── GRAIN OVERLAY ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  animation: grainShift 0.3s steps(1) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-1%,1%); }
+  50%  { transform: translate(1%,-1%); }
+  75%  { transform: translate(-1%,-1%); }
+  100% { transform: translate(1%,1%); }
+}
+
+/* ─── CURSOR TRAIL ─── */
+.cursor-trail {
+  position: fixed; width: 6px; height: 6px;
+  background: var(--purple-light); border-radius: 50%;
+  pointer-events: none; z-index: 9997;
+  transform: translate(-50%,-50%);
+  transition: opacity 0.5s;
+  mix-blend-mode: screen;
+}
+
+/* ─── HERO LOGO GLITCH ─── */
+.hero-logo-img {
+  filter: drop-shadow(0 0 30px rgba(124,106,232,0.5));
+  animation: heroFadeIn 1s ease both, heroGlitch 8s ease-in-out infinite 2s;
+}
+@keyframes heroGlitch {
+  0%, 95%, 100% { filter: drop-shadow(0 0 30px rgba(124,106,232,0.5)); transform: translate(0,0) skew(0deg); }
+  96%  { filter: drop-shadow(-3px 0 0 #ff4444) drop-shadow(3px 0 0 #6be08a); transform: translate(-2px,0) skew(-0.5deg); }
+  97%  { filter: drop-shadow(3px 0 0 #ff4444) drop-shadow(-3px 0 0 #6be08a); transform: translate(2px,0) skew(0.5deg); }
+  98%  { filter: drop-shadow(-2px 0 0 #ffe566); transform: translate(0,1px) skew(0deg); }
+  99%  { filter: drop-shadow(0 0 30px rgba(124,106,232,0.5)); transform: translate(0,0) skew(0deg); }
+}
+
+/* ─── HERO SCANLINES ─── */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+  animation: scanMove 6s linear infinite;
+}
+@keyframes scanMove {
+  from { background-position: 0 0; }
+  to   { background-position: 0 100px; }
+}
+
+/* ─── MAGNETIC BUTTON base ─── */
+.hover-cta, .btn-white, .comm-cta {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ─── TEXT SCRAMBLE target ─── */
+.banner-title, .hover-title, .section-title {
+  will-change: contents;
+}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ─── COMM CARD GLOW ─── */
+.comm-card {
+  position: relative; overflow: hidden;
+}
+.comm-card::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: var(--r-lg);
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.07) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.comm-card:hover::before { opacity: 1; }
+
+/* ─── GAME CARD GLOW ─── */
+.game-card {
+  position: relative;
+}
+.game-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.05) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none; z-index: 2;
+}
+.game-card:hover::after { opacity: 1; }
+
+/* ─── ABOUT LOGO FLOAT ─── */
+.about-logo-img {
+  animation: aboutFloat 5s ease-in-out infinite;
+}
+@keyframes aboutFloat {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-12px) rotate(1deg); }
+}
+
+/* ─── CANVAS PARTICLES ─── */
+#heroCanvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+}
+
+/* ─── CTA STRIP TEXT SHINE ─── */
+.cta-strip h2 {
+  font-size: clamp(2rem, 6vw, 4.5rem); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1.2; position: relative;
+  color: var(--white);
+  overflow: visible;
+}
+.cta-strip h2 em {
+  color: var(--yellow);
+  font-style: italic;
+}
+
+/* ─── NAV BLUR ─── */
+nav {
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  background: rgba(120, 104, 221, 0.85);
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav id="stickyNav">
+  <div class="nav-inner">
+    <ul class="nav-links">
+      <li><a href="#featured">Featured</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#" class="nav-logo"><img src="./images/logo.png"><li><a href="#about">About</a></li>
+      <li><a href="#community">Community</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-logo-wrap">
+   <img src="./images/logo.png" class="hero-logo-img"></div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- FEATURED BANNERS -->
+<section id="featured">
+  <div class="feature-banner" style="--card-color:#ff4444;">
+    <img src="./images/broadcast.jpeg" alt="BROADCAST" class="banner-bg">
+    <div class="feature-overlay"></div>
+    <div class="feature-hover-info">
+      <div class="hover-genre">Surreal RPG</div>
+      <div class="hover-title">BROADCAST*</div>
+      <div class="hover-desc">A surreal narrative RPG fusing first-person exploration with fast and deadly turn-based combat. Not for the faint-hearted.</div>
+      <a href="https://funke-munke.itch.io/broadcast" target="_blank" class="hover-cta" style="color:#fff;">Learn More</a>
+    </div>
+    <div class="banner-bottom">
+      <div class="banner-title-area">
+        <div class="banner-label" style="color:#ff4444;">Surreal RPG · Coming Soon</div>
+        <div class="banner-title">BROADCAST*</div>
+      </div>
+      <div class="banner-hint">Hover for info</div>
+    </div>
+  </div>
+
+  <div class="feature-banner" style="--card-color:#ffe566;">
+    <img src="./images/fathobo.jpg" alt="FAT HOBO" class="banner-bg">
+    <div class="feature-overlay"></div>
+    <div class="feature-hover-info">
+      <div class="hover-genre">Action Adventure</div>
+      <div class="hover-title">FAT HOBO:<br>Hobocop Saves Christmas</div>
+      <div class="hover-desc">Shoot a Porno. Kill a Granny. Punch God in the Face. A demo for the completely unhinged — and we wouldn't have it any other way.</div>
+      <a href="https://funke-munke.itch.io/fathobochristmas" target="_blank" class="hover-cta" style="color:#1a1228;">Play Demo</a>
+    </div>
+    <div class="banner-bottom">
+      <div class="banner-title-area">
+        <div class="banner-label" style="color:#ffe566;">Action Adventure · Demo Available</div>
+        <div class="banner-title">FAT HOBO</div>
+      </div>
+      <div class="banner-hint">Hover for info</div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMES -->
+<section class="section" id="games">
+  <div class="section-label" style="text-align: center;">All Games</div>
+  <div class="games-grid" style="margin-top: 5rem;">
+    <a href="https://funke-munke.itch.io/the-morrow-after" target="_blank"
+       class="game-card" style="--card-color:#6be08a; --card-badge-bg:rgba(107,224,138,0.15);">
+      <img src="./images/MorningAfter.png" alt="MorningAfter" class="game-art">
+      <div class="game-body">
+        <span class="game-genre-badge">Puzzle</span>
+        <div class="game-title">The Morrow After</div>
+        <div class="game-desc">A time loop puzzle game where you have to get rid of all the guests after a castle party. Every loop, a new clue.</div>
+        <div class="game-footer">
+          <span class="game-play">Play in Browser</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://funke-munke.itch.io/columbia-de-cajone" target="_blank"
+       class="game-card" style="--card-color:#ff9f45; --card-badge-bg:rgba(255,159,69,0.15);">
+      <img src="./images/colombino.png" alt="Columbino" class="game-art">
+       <div class="game-body">
+        <span class="game-genre-badge">Action</span>
+        <div class="game-title">The Crazy Cruise of Columbino!</div>
+        <div class="game-desc">A 15th-century WarioWare-styled minigame adventurer. Columbus never had it this chaotic.</div>
+        <div class="game-footer">
+          <span class="game-play">Play in Browser</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://funke-munke.itch.io/fathobochristmas" target="_blank"
+       class="game-card" style="--card-color:#ff5566; --card-badge-bg:rgba(255,85,102,0.15);">
+      <img src="./images/fathobo.jpg" alt="FatHobo" class="game-art">
+       <div class="game-body">
+        <span class="game-genre-badge">Adventure</span>
+        <div class="game-title">FAT HOBO: Hobocop Saves Christmas</div>
+        <div class="game-desc">Shoot a Porno, Kill a Granny, Punch God in the Face. A demo for the completely unhinged.</div>
+        <div class="game-footer">
+          <span class="game-play">Demo Available</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://funke-munke.itch.io/broadcast" target="_blank"
+       class="game-card" style="--card-color:#ff4444; --card-badge-bg:rgba(255,68,68,0.15);">
+      <img src="./images/broadcast.jpeg" alt="BROADCAST" class="game-art">
+      <div class="game-body">
+        <span class="game-genre-badge">Role Playing</span>
+        <div class="game-title">BROADCAST*</div>
+        <div class="game-desc">A surreal narrative RPG fusing first-person exploration with fast and deadly turn-based combat.</div>
+        <div class="game-footer">
+          <span class="game-play">Coming Soon</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section section-alt" id="about">
+  <div class="about-wrap">
+    <div class="about-left reveal">
+      <div class="section-label">About Us</div>
+      <h2 class="section-title" style="margin-bottom:1rem;">Just Two Devs<br>Making Chaos</h2>
+      <p><strong>Funke Munke</strong> is an indie game studio built by two people who refused to make normal games.</p>
+      <p>We craft weird stories and fun experiences — games that make you laugh, think, and occasionally question reality. From time-loop party puzzles to surreal narrative RPGs, if it's unexpected, it's probably ours.</p>
+      <p>We're small, scrappy, and we ship games that feel like <strong>nothing else out there</strong>.</p>
+    </div>
+    <div class="about-visual reveal reveal-delay-2">
+      <div class="about-deco about-deco-1"></div>
+      <div class="about-deco about-deco-2"></div>
+      <img src="./images/logo.png" alt="Funke Munke Logo" class="about-logo-img">
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <h2>Ready to get <em>funky?</em></h2>
+</div>
+
+<!-- COMMUNITY -->
+<section class="section" id="community">
+  <div class="section-label">Community</div>
+  <div class="section-title">Stay Up to Date</div>
+
+  <div class="comm-grid">
+
+    <!-- Discord -->
+    <a href="https://discord.gg/PVxvBsRF55" target="_blank"
+       class="comm-card" style="--card-color:#ffffff;">
+
+      <div class="comm-icon-svg">
+        <img src="./images/discordlogo.png" class="comm-icon">
+      </div>
+
+      <div class="comm-title">Discord</div>
+      <div class="comm-desc">
+        Meet the devs, get early access, and hang out with fellow weirdos.
+      </div>
+      <div class="comm-cta">Join Now</div>
+    </a>
+
+    <!-- Twitter -->
+    <a href="https://x.com/funkemunkegames" target="_blank"
+       class="comm-card" style="--card-color:#ffffff;">
+
+      <div class="comm-icon-svg">
+        <img src="./images/twitterlogo.png" class="comm-icon">
+      </div>
+
+      <div class="comm-title">Twitter</div>
+      <div class="comm-desc">
+        Latest dev logs, screenshots, and our chaotic development journey.
+      </div>
+      <div class="comm-cta">Follow</div>
+    </a>
+
+    <!-- itch.io -->
+    <a href="https://funke-munke.itch.io/" target="_blank"
+       class="comm-card" style="--card-color:#ffffff;">
+
+      <div class="comm-icon-svg">
+        <img src="./images/itchlogo.svg" class="comm-icon">
+      </div>
+
+      <div class="comm-title">itch.io</div>
+      <div class="comm-desc">
+        Check out our smaller games and game jams!
+      </div>
+      <div class="comm-cta">Play Free</div>
+    </a>
+
+    <!-- Steam -->
+    <a href="https://store.steampowered.com/" target="_blank"
+       class="comm-card" style="--card-color:#ffffff;">
+
+      <div class="comm-icon-svg">
+        <img src="./images/steamlogo.png" class="comm-icon">
+      </div>
+
+      <div class="comm-title">Steam</div>
+      <div class="comm-desc">
+        All our games in one place.
+      </div>
+      <div class="comm-cta">Wishlist Soon</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="./images/logo.png">
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://funke-munke.itch.io/" target="_blank">itch.io</a></li>
+    <li><a href="https://discord.gg/PVxvBsRF55" target="_blank">Discord</a></li>
+    <li><a href="https://x.com/funkemunkegames" target="_blank">Twitter</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Funke Munke. All weirdness reserved.</div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+/* ── NAV ── */
+const nav  = document.getElementById('stickyNav');
+const hero = document.getElementById('hero');
+const navObs = new IntersectionObserver(([entry]) => {
+  nav.classList.toggle('visible', !entry.isIntersecting);
+}, { threshold: 0.1 });
+navObs.observe(hero);
+
+/* ── CURSOR TRAIL ── */
+const trailCount = 8;
+const trails = Array.from({length: trailCount}, () => {
+  const el = document.createElement('div');
+  el.className = 'cursor-trail';
+  document.body.appendChild(el);
+  return el;
+});
+let trailPositions = Array.from({length: trailCount}, () => ({x: 0, y: 0}));
+function animateTrails() {
+  trailPositions[0] = {x: mouseX, y: mouseY};
+  for (let i = 1; i < trailCount; i++) {
+    trailPositions[i] = {
+      x: trailPositions[i].x + (trailPositions[i-1].x - trailPositions[i].x) * 0.35,
+      y: trailPositions[i].y + (trailPositions[i-1].y - trailPositions[i].y) * 0.35
+    };
+  }
+  trails.forEach((el, i) => {
+    const scale = 1 - i / trailCount;
+    el.style.left = trailPositions[i].x + 'px';
+    el.style.top  = trailPositions[i].y + 'px';
+    el.style.opacity = scale * 0.5;
+    el.style.transform = `translate(-50%,-50%) scale(${scale})`;
+  });
+  requestAnimationFrame(animateTrails);
+}
+animateTrails();
+
+/* ── HERO CANVAS PARTICLES ── */
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COLORS = ['rgba(168,153,240,', 'rgba(255,229,102,', 'rgba(107,224,138,', 'rgba(255,69,86,'];
+  function Particle() {
+    this.reset();
+  }
+  Particle.prototype.reset = function() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.r = Math.random() * 2 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+  };
+  Particle.prototype.update = function() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  };
+  for (let i = 0; i < 90; i++) particles.push(new Particle());
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(168,153,240,${(1 - dist/100) * 0.12})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    particles.forEach(p => {
+      p.update();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── SCROLL EFFECTS ── */
+const logo = document.querySelector('.hero-logo-img');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) logo && logo.classList.add('shrink-fade');
+  else logo && logo.classList.remove('shrink-fade');
+
+  document.querySelectorAll('.banner-bg').forEach(bg => {
+    const rect = bg.parentElement.getBoundingClientRect();
+    const offset = rect.top * -0.05;
+    bg.style.transform = `scale(1.05) translateY(${offset}px)`;
+  });
+});
+
+/* ── INTERSECTION OBSERVERS ── */
+const cardObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('show');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.game-card').forEach(el => cardObs.observe(el));
+
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('revealed');
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ── GAME CARD HOVER SECTION COLOR ── */
+document.querySelectorAll('.comm-card, .game-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    const y = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+    card.style.setProperty('--mx', x + '%');
+    card.style.setProperty('--my', y + '%');
+  });
+});
+
+const gamesSection = document.getElementById('games');
+// Kill the CSS animation entirely — use backgroundColor only
+gamesSection.style.animation = 'none';
+gamesSection.style.background = 'none';
+gamesSection.style.backgroundColor = '#5a47c2';
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return {r,g,b};
+}
+function darken({r,g,b}, amount=0.55) {
+  return `rgb(${Math.round(r*amount)},${Math.round(g*amount)},${Math.round(b*amount)})`;
+}
+
+let leaveTimer = null;
+document.querySelectorAll('.game-card').forEach(card => {
+  const raw = card.style.getPropertyValue('--card-color').trim();
+  const darkColor = darken(hexToRgb(raw));
+  card.addEventListener('mouseenter', () => {
+    clearTimeout(leaveTimer);
+    gamesSection.style.transition = 'background-color 0.5s ease';
+    gamesSection.style.backgroundColor = darkColor;
+  });
+  card.addEventListener('mouseleave', () => {
+    clearTimeout(leaveTimer);
+    leaveTimer = setTimeout(() => {
+      gamesSection.style.transition = 'background-color 0.8s ease';
+      gamesSection.style.backgroundColor = '#5a47c2';
+    }, 50);
+  });
+});
+
+/* ── TEXT SCRAMBLE ── */
+class Scramble {
+  constructor(el) {
+    this.el = el;
+    this.original = el.textContent;
+    this.chars = 'あ0BΦ#Δ≠∞∑?!@Ξ░▒';
+    this.running = false;
+  }
+  run() {
+    if (this.running) return;
+    this.running = true;
+    let iter = 0;
+    const total = 12;
+    const iv = setInterval(() => {
+      this.el.textContent = this.original.split('').map((c, i) => {
+        if (c === ' ' || c === '\n') return c;
+        if (i < iter / total * this.original.length) return c;
+        return this.chars[Math.floor(Math.random() * this.chars.length)];
+      }).join('');
+      iter++;
+      if (iter > total) { this.el.textContent = this.original; clearInterval(iv); this.running = false; }
+    }, 40);
+  }
+}
+document.querySelectorAll('.banner-title, .hover-title').forEach(el => {
+  const s = new Scramble(el);
+  el.closest('.feature-banner').addEventListener('mouseenter', () => s.run());
+});
+
+/* ── MAGNETIC BUTTONS ── */
+document.querySelectorAll('.hover-cta, .btn-white').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width/2);
+    const dy = e.clientY - (r.top  + r.height/2);
+    btn.style.transform = `translate(${dx*0.25}px, ${dy*0.25}px) scale(1.06)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+/* ── COMM CARD ENTRANCE ── */
+const commObs = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }, i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.comm-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = '0.5s cubic-bezier(.2,.8,.2,1)';
+  commObs.observe(el);
+});
+</script>
+</body>
+</html>
